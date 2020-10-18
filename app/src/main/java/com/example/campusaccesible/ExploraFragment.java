@@ -3,10 +3,15 @@ package com.example.campusaccesible;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +19,8 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class ExploraFragment extends Fragment {
+
+    List<Building> elements;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,13 +61,38 @@ public class ExploraFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        // Set the title of the the activity
         ((MainActivity) getActivity()).getSupportActionBar().setTitle("Explora");
+        //this.init();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_explora, container, false);
+    }
+
+    public void init() {
+        this.elements = new ArrayList<>();
+        elements.add(new Building("Edificio 1"));
+        elements.add(new Building("Edificio 2"));
+        elements.add(new Building("Edificio 3"));
+        elements.add(new Building("Edificio 4"));
+        elements.add(new Building("Edificio 5"));
+
+
+
+        BuildingAdapter buildingAdapter = new BuildingAdapter(
+                elements,
+                (( MainActivity) getActivity())
+        );
+        RecyclerView recyclerView =
+                (( MainActivity) getActivity()).findViewById(
+                        R.id.listRecyclerView
+                );
+        recyclerView.setLayoutManager(new LinearLayoutManager(
+                (( MainActivity) getActivity()))
+        );
+        recyclerView.setAdapter(buildingAdapter);
     }
 }
