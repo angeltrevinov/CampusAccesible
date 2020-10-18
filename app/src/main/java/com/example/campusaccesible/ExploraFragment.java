@@ -3,6 +3,7 @@ package com.example.campusaccesible;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +21,8 @@ import java.util.List;
  */
 public class ExploraFragment extends Fragment {
 
+    private RecyclerView buildingRecyclerView;
+    private BuildingAdapter mbuildingAdapter;
     List<Building> elements;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -63,13 +66,22 @@ public class ExploraFragment extends Fragment {
 
         // Set the title of the the activity
         ((MainActivity) getActivity()).getSupportActionBar().setTitle("Explora");
-        //this.init();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_explora, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_explora, container, false);
+
+        this.buildingRecyclerView = view.findViewById(R.id.listRecyclerView);
+        this.buildingRecyclerView.setHasFixedSize(true);
+        this.buildingRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        init();
+        this.mbuildingAdapter = new BuildingAdapter(this.elements, view.getContext());
+        this.buildingRecyclerView.setAdapter(this.mbuildingAdapter);
+
+        return view;
     }
 
     public void init() {
@@ -79,20 +91,5 @@ public class ExploraFragment extends Fragment {
         elements.add(new Building("Edificio 3"));
         elements.add(new Building("Edificio 4"));
         elements.add(new Building("Edificio 5"));
-
-
-
-        BuildingAdapter buildingAdapter = new BuildingAdapter(
-                elements,
-                (( MainActivity) getActivity())
-        );
-        RecyclerView recyclerView =
-                (( MainActivity) getActivity()).findViewById(
-                        R.id.listRecyclerView
-                );
-        recyclerView.setLayoutManager(new LinearLayoutManager(
-                (( MainActivity) getActivity()))
-        );
-        recyclerView.setAdapter(buildingAdapter);
     }
 }

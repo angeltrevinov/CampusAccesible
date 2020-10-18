@@ -14,47 +14,49 @@ import java.util.List;
 public class BuildingAdapter extends RecyclerView.Adapter<BuildingAdapter.ViewHolder> {
 
     private List<Building> Data;
-    private LayoutInflater minflatter;
     private Context context;
 
     public BuildingAdapter(List<Building> itemList, Context context) {
-        this.minflatter = LayoutInflater.from(context);
         this.context = context;
         this.Data = itemList;
     }
 
     @NonNull
     @Override
-    public BuildingAdapter.ViewHolder onCreateViewHolder(
+    public ViewHolder onCreateViewHolder(
             @NonNull ViewGroup parent,
             int viewType
     ) {
-        View view = this.minflatter.inflate(R.layout.building_element, null);
-        return new BuildingAdapter.ViewHolder(view);
+        View view = LayoutInflater.from(context).inflate(
+                R.layout.building_element,
+                parent,
+                false
+        );
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BuildingAdapter.ViewHolder holder, int position) {
-        holder.bindData(Data.get(position));
+    public void onBindViewHolder(
+            @NonNull ViewHolder holder,
+            int position
+    ) {
+        Building currentItem = Data.get(position);
+        holder.NamBuildingHolder.setText(currentItem.getStrName());
     }
 
     @Override
     public int getItemCount() { return this.Data.size(); }
 
-    public void setItems(List<Building> items) { this.Data = items; }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         //ImageView img;
         TextView NamBuildingHolder;
 
-        ViewHolder(View itemView) {
+       public  ViewHolder(@NonNull View itemView) {
             super(itemView);
+
             //img = itemView.findViewById(R.id.imageBuilding);
             this.NamBuildingHolder = itemView.findViewById(R.id.buildingNameHolder);
-        }
-
-        void bindData(final Building item) {
-            this.NamBuildingHolder.setText(item.getStrName());
         }
     }
 }
