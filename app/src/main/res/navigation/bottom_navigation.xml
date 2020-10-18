@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_navigation"
+    app:startDestination="@id/exploraFragment">
+
+    <fragment
+        android:id="@+id/exploraFragment"
+        android:name="com.example.campusaccesible.ExploraFragment"
+        android:label="fragment_explora"
+        tools:layout="@layout/fragment_explora" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.campusaccesible.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" />
+    <fragment
+        android:id="@+id/asistenciaFragment"
+        android:name="com.example.campusaccesible.AsistenciaFragment"
+        android:label="fragment_asistencia"
+        tools:layout="@layout/fragment_asistencia" />
+</navigation>
