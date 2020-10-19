@@ -1,12 +1,20 @@
 package com.example.campusaccesible;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+
+import static androidx.core.content.ContextCompat.getSystemService;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,16 +64,47 @@ public class MapFragment extends Fragment {
         }
         ((MainActivity) getActivity()).getSupportActionBar().setTitle("Mapa");
     }
-
+    //Ambos Dropdown
+    AutoCompleteTextView opcion_destino;
+    AutoCompleteTextView opcion_origen;
+    //Lista de Opciones
+    String[] languages = { "Aulas 1 ","Aulas 2","Aulas 3","Aulas 4","Aulas 6","Aulas 7","Bancomer","Biblioteca","CETEC","CIAP","Centrales","Centro Estudiantil","Centro de Biotecnologia","DAF","Doña Tota" ,"Fusion Wok","Gimnasio","Jubileo","NectarWorks","Oxxo","Panem","Rectoria","Señor Latino","Starbucks","Subway","Super Saladas","TECstore","The Food Box"};
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
-        //return inflater.inflate(R.layout.fragment_map, container, false);
-
         final View rootView = inflater.inflate(R.layout.fragment_map, container, false);
+        //Dropdown de Input destination
+        opcion_destino = rootView.findViewById(R.id.destination);
+
+        opcion_destino.setAdapter(new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,languages));
+
+        opcion_destino.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                in.hideSoftInputFromWindow(arg1.getWindowToken(), 0);
+            }
+        });
+
+        //Dropdown de Input Origin
+
+        opcion_origen = rootView.findViewById(R.id.origin);
+
+        opcion_origen.setAdapter(new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,languages));
+
+        opcion_origen.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                in.hideSoftInputFromWindow(arg1.getWindowToken(), 0);
+            }
+        });
 
         return rootView;
     }
+
+
+
 }
