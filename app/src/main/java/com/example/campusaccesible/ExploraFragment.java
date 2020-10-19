@@ -117,10 +117,10 @@ public class ExploraFragment extends Fragment {
     //  precise
     public void init() {
         this.elements = new ArrayList<>();
-        elements.add(new Building("Edificio 1"));
-        elements.add(new Building("Edificio 2"));
-        elements.add(new Building("Edificio 3"));
-        elements.add(new Building("Edificio 4"));
-        elements.add(new Building("Edificio 5"));
+        elements.add(new Building("Edificio 1", "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg"));
+        elements.add(new Building("Edificio 2", "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg"));
+        elements.add(new Building("Edificio 3", "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg"));
+        elements.add(new Building("Edificio 4", "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg"));
+        elements.add(new Building("Edificio 5", "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg"));
     }
 }

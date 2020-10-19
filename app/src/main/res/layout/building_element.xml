@@ -19,8 +19,7 @@
                 android:id="@+id/imageBuilding"
                 android:layout_width="match_parent"
                 android:layout_height="140dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/mural"/>
+                android:scaleType="fitXY"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
