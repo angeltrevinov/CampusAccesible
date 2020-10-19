@@ -7,11 +7,15 @@ package com.example.campusaccesible;
 public class Building {
 
     private String strName;
-    //public String imgUrl; For when we receive different images
+    public String imgUrl; //For when we receive different images
 
     // -----------------------------------------------------
-    public Building(String strName) {
+    public Building(
+            String strName,
+            String imgUrl
+    ) {
         this.strName = strName;
+        this.imgUrl = imgUrl;
     }
 
     // -----------------------------------------------------
@@ -22,5 +26,14 @@ public class Building {
     // -----------------------------------------------------
     public void setStrName(String strName) {
         this.strName = strName;
+    }
+
+    // -----------------------------------------------------
+    public String getImgUrl() {
+        return imgUrl;
+    }
+    // -----------------------------------------------------
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 }
