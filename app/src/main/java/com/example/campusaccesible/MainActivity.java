@@ -15,10 +15,10 @@ import java.util.Deque;
 
 public class MainActivity extends AppCompatActivity {
 
+    // holder for the bottom navigation bar
     BottomNavigationView bottomNav;
 
     // -----------------------------------------------------
-
     /**
      * The on Create method, initialize methods and variables.
      * @param savedInstanceState
@@ -31,16 +31,16 @@ public class MainActivity extends AppCompatActivity {
         // find the navigation bar
         this.bottomNav = findViewById(R.id.bottom_navigation);
 
-        // show the home fragment
+        // show the Explora fragment and set it as selected
+        // in the navigation view
         loadFragment(new ExploraFragment());
         this.bottomNav.setSelectedItemId(R.id.explora_menu_button);
 
-         // listen to navigation bar events
+        // listen to navigation bar events
         this.bottomNav.setOnNavigationItemSelectedListener(navListener);
     }
 
     // -----------------------------------------------------
-
     /**
      * replaces the current home fragment with the one it just selected
      * @param fragment
@@ -53,6 +53,11 @@ public class MainActivity extends AppCompatActivity {
                 ).commit();
     }
 
+    // -----------------------------------------------------
+    /**
+     * Method that listens for navigation changes and calls
+     * the loadFragment to load the corresponding fragment.
+     */
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override

@@ -1,5 +1,9 @@
 package com.example.campusaccesible;
 
+/**
+ * Class that holds the structure of our info
+ * TODO: Change to attributes needed
+ */
 public class Building {
 
     private String strName;
