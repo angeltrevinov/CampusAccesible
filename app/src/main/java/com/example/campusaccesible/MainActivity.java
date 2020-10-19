@@ -1,10 +1,13 @@
 package com.example.campusaccesible;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
@@ -38,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
 
         // listen to navigation bar events
         this.bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.action_bar_layout);
+
     }
 
     // -----------------------------------------------------
@@ -66,14 +73,20 @@ public class MainActivity extends AppCompatActivity {
 
                     switch (item.getItemId()) {
                         case R.id.explora_menu_button:
+                            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+                            getSupportActionBar().setCustomView(R.layout.action_bar_layout);
                             selectedFragment = new ExploraFragment();
                             loadFragment(selectedFragment);
                             return true;
                         case R.id.mapa_menu_button:
+                            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+                            getSupportActionBar().setCustomView(R.layout.action_bar_mapa);
                             selectedFragment = new MapFragment();
                             loadFragment(selectedFragment);
                             return true;
                         case R.id.asistencia_menu_button:
+                            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+                            getSupportActionBar().setCustomView(R.layout.action_bar_asistencia);
                             selectedFragment = new AsistenciaFragment();
                             loadFragment(selectedFragment);
                             return true;
