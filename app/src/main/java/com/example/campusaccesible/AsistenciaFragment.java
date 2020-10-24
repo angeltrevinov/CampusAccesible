@@ -3,10 +3,16 @@ package com.example.campusaccesible;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +29,11 @@ public class AsistenciaFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private RecyclerView mRecyclerView;
+    private AdapterAsistencia mAdapterAsistencia;
+    private List<Asistencia> mAsistencia;
+
 
     public AsistenciaFragment() {
         // Required empty public constructor
@@ -61,6 +72,23 @@ public class AsistenciaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_asistencia, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_asistencia, container, false);
+
+        mAsistencia = new ArrayList<>();
+
+        mRecyclerView = rootView.findViewById(R.id.recycler_view);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
+
+
+        //mRequestQueue = Volley.newRequestQueue(getActivity());
+        mAsistencia.add(new Asistencia("Cambio de Salon","Sugerir cambio de salon para que el traslado sea mas efectivo y efeciciente",null));
+        mAsistencia.add(new Asistencia("Silla de Ruedas","Pedir una silla de ruedas para poder usarla en el campus, esto ayudara a trasladar al discapacitado",null));
+        mAsistencia.add(new Asistencia("Asistencia Personal","En dado caso que el discapacitado necesite ayuda de alguna persona, el campus le brindara la ayuda que necesite",null));
+
+        mAdapterAsistencia = new AdapterAsistencia(rootView.getContext(),mAsistencia);
+
+        mRecyclerView.setAdapter(mAdapterAsistencia);
+        return rootView;
     }
 }
