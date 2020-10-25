@@ -31,7 +31,7 @@ public class AsistenciaFragment extends Fragment {
     private String mParam2;
 
     private RecyclerView mRecyclerView;
-    private AdapterAsistencia mAdapterAsistencia;
+    private AsistenciaAdapter mAsistenciaAdapter;
     private List<Asistencia> mAsistencia;
 
 
@@ -86,9 +86,9 @@ public class AsistenciaFragment extends Fragment {
         mAsistencia.add(new Asistencia("Silla de Ruedas","Pedir una silla de ruedas para poder usarla en el campus, esto ayudara a trasladar al discapacitado",null));
         mAsistencia.add(new Asistencia("Asistencia Personal","En dado caso que el discapacitado necesite ayuda de alguna persona, el campus le brindara la ayuda que necesite",null));
 
-        mAdapterAsistencia = new AdapterAsistencia(rootView.getContext(),mAsistencia);
+        mAsistenciaAdapter = new AsistenciaAdapter(rootView.getContext(),mAsistencia);
 
-        mRecyclerView.setAdapter(mAdapterAsistencia);
+        mRecyclerView.setAdapter(mAsistenciaAdapter);
         return rootView;
     }
 }

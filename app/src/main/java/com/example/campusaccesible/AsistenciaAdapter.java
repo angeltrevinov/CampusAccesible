@@ -10,31 +10,30 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterAsistencia extends  RecyclerView.Adapter<AdapterAsistencia.ViewHolder>{
+public class AsistenciaAdapter extends  RecyclerView.Adapter<AsistenciaAdapter.ViewHolder>{
 
     private Context mContext;
 
     private List<Asistencia> mAsistenciaList;
 
-    public AdapterAsistencia(Context context,List<Asistencia> AsistenciaList){
+    public AsistenciaAdapter(Context context, List<Asistencia> AsistenciaList){
         mContext = context;
         mAsistenciaList = AsistenciaList;
     }
 
     @NonNull
     @Override
-    public AdapterAsistencia.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AsistenciaAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.aisistencia_item,parent,false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AdapterAsistencia.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AsistenciaAdapter.ViewHolder holder, int position) {
 
         Asistencia currentItem = mAsistenciaList.get(position);
         String Titulo = currentItem.getTitulo();
@@ -43,7 +42,7 @@ public class AdapterAsistencia extends  RecyclerView.Adapter<AdapterAsistencia.V
 
         holder.mTitulo.setText(Titulo);
         holder.mSubtitulo.setText(Subtitulo);
-        Picasso.with(mContext).load(image).fit().centerInside().into(holder.mImageView);
+        Glide.with(mContext).load(image).centerCrop().into(holder.mImageView);
     }
 
     @Override
