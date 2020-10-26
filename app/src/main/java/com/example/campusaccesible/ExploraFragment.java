@@ -97,7 +97,7 @@ public class ExploraFragment extends Fragment {
                 new LinearLayoutManager(view.getContext())
         );
 
-        init();
+        this.generateBuildingInfo();
 
         // creating the adapter
         this.mbuildingAdapter = new BuildingAdapter(
@@ -115,12 +115,58 @@ public class ExploraFragment extends Fragment {
     // Just a method that creates our buildings
     // TODO: This should be an http method and name more
     //  precise
-    public void init() {
+    public void generateBuildingInfo() {
         this.elements = new ArrayList<>();
-        elements.add(new Building("Edificio 1"));
-        elements.add(new Building("Edificio 2"));
-        elements.add(new Building("Edificio 3"));
-        elements.add(new Building("Edificio 4"));
-        elements.add(new Building("Edificio 5"));
+        elements.add(new Building(
+                "",
+                "Edificio 1",
+                "",
+                "",
+                "",
+                "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg",
+                false,
+                false,
+                false));
+        elements.add(new Building(
+                "",
+                "Edificio 2",
+                "",
+                "",
+                "",
+                "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg",
+                false,
+                false,
+                false));
+        elements.add(new Building(
+                "",
+                "Edificio 3",
+                "",
+                "",
+                "",
+                "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg",
+                false,
+                false,
+                false));
+        elements.add(new Building(
+                "",
+                "Edificio 4",
+                "",
+                "",
+                "",
+                "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg",
+                false,
+                false,
+                false));
+        elements.add(new Building(
+                "",
+                "Edificio 5",
+                "",
+                "",
+                "",
+                "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg",
+                false,
+                false,
+                false));
+
     }
 }
