@@ -93,7 +93,6 @@ public class BuildingAdapter extends RecyclerView.Adapter<BuildingAdapter.ViewHo
         ImageView img;
         TextView NamBuildingHolder;
         View buildingHolder;
-        Context context;
 
         // -------------------------------------------------
         /**

@@ -6,6 +6,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +23,8 @@ public class EdificioDetalle extends AppCompatActivity {
     // list that stores the elements we are going to display
     List<Detalles> datos;
 
+    ImageView imgBuilding;
+
     Intent intent;
     Building building;
 
@@ -28,6 +33,7 @@ public class EdificioDetalle extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edificio_detalle);
 
+        this.imgBuilding = findViewById(R.id.imgBuilding);
         detallesRecyclerView = findViewById(R.id.idRecyDetalles);
 
         detallesRecyclerView.setHasFixedSize(true);
@@ -40,6 +46,11 @@ public class EdificioDetalle extends AppCompatActivity {
         // putting name of building in the title
         this.getSupportActionBar().setTitle(this.building.getStrName());
 
+        // putting image of the building
+        Glide.with(this).load(this.building.getImgUrl())
+                .centerCrop().into(this.imgBuilding);
+
+
         generarDatos();
 
         // creating the adapter
@@ -50,6 +61,7 @@ public class EdificioDetalle extends AppCompatActivity {
 
     }
 
+    // TODO: delete wen data from building is correct
     public void generarDatos() {
         datos = new ArrayList<>();
         datos.add(new Detalles("Baños", "", ""));
