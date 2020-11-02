@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import java.util.ArrayList;
@@ -19,6 +20,9 @@ public class EdificioDetalle extends AppCompatActivity {
     // list that stores the elements we are going to display
     List<Detalles> datos;
 
+    Intent intent;
+    Building building;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +32,13 @@ public class EdificioDetalle extends AppCompatActivity {
 
         detallesRecyclerView.setHasFixedSize(true);
         detallesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // getting pass data
+        this.intent = getIntent();
+        this.building = (Building) this.intent.getSerializableExtra(BuildingAdapter.CURRRENT_BUILDING);
+
+        // putting name of building in the title
+        this.getSupportActionBar().setTitle(this.building.getStrName());
 
         generarDatos();
 
