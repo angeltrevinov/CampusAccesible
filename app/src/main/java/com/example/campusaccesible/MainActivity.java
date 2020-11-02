@@ -7,19 +7,30 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 
 public class MainActivity extends AppCompatActivity {
 
+    static public String TAG = "FIREBASE_MSG";
+
     // holder for the bottom navigation bar
     BottomNavigationView bottomNav;
+
+    // our firestore instance
+    FirebaseFirestore firestore;
 
     // -----------------------------------------------------
     /**
@@ -44,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.action_bar_layout);
+
+        // Firestore
+        this.firestore = FirebaseFirestore.getInstance();
+        this.getBuildingsFromFirestore();
 
     }
 
@@ -94,4 +109,22 @@ public class MainActivity extends AppCompatActivity {
                     return false;
                 }
             };
+
+    // -----------------------------------------------------
+    public void getBuildingsFromFirestore() {
+        this.firestore.collection("location")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                Log.d(TAG, documentSnapshot.getId() + "=>" + documentSnapshot.getData());
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+    }
 }

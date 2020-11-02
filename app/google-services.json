@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "804325559249",
+    "firebase_url": "https://campusaccesible-753b5.firebaseio.com",
+    "project_id": "campusaccesible-753b5",
+    "storage_bucket": "campusaccesible-753b5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:804325559249:android:d273f90d7bbd97b383eef0",
+        "android_client_info": {
+          "package_name": "com.example.campusaccesible"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "804325559249-4i0ihb68u6ajp6u7jk2cqnurubc1h4ia.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfZCW0WYCXlZ-8wO7bPhHG8hWX1TdRSzI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "804325559249-4i0ihb68u6ajp6u7jk2cqnurubc1h4ia.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
