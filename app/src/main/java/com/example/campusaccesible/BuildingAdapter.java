@@ -1,6 +1,7 @@
 package com.example.campusaccesible;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,10 @@ public class BuildingAdapter extends RecyclerView.Adapter<BuildingAdapter.ViewHo
 
     private List<Building> Data;
     public Context context;
+
+    // to store our instance
+    public static final String CURRRENT_BUILDING =
+            "com.example.twoact.extra.CURRENT_BUILDING";
 
     // -----------------------------------------------------
     public BuildingAdapter(
@@ -70,18 +75,11 @@ public class BuildingAdapter extends RecyclerView.Adapter<BuildingAdapter.ViewHo
         holder.buildingHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: implement intent
-                showToast(currentItem.getStrName());
+                Intent intent = new Intent(context, EdificioDetalle.class);
+                intent.putExtra(CURRRENT_BUILDING, currentItem);
+                context.startActivity(intent);
             }
         });
-    }
-
-    // -------------------------------------------------
-    // TODO: Delete this method
-    public void showToast(String strName) {
-        String strMessage = "You clicked on " + strName;
-        Toast toast = Toast.makeText(this.context, strMessage, Toast.LENGTH_SHORT);
-        toast.show();
     }
 
     // -----------------------------------------------------

@@ -1,10 +1,12 @@
 package com.example.campusaccesible;
 
+import java.io.Serializable;
+
 /**
  * Class that holds the structure of our info
  * TODO: Change to attributes needed
  */
-public class Building {
+public class Building implements Serializable {
 
     private String strId;
     private String strName;
