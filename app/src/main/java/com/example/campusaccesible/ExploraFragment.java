@@ -61,8 +61,8 @@ public class ExploraFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // Set the title of the the activity
-        ((MainActivity) getActivity()).getSupportActionBar().
-                setTitle("Explora");
+        ((MainActivity) getActivity()).getSupportActionBar()
+                .setTitle("Explora");
 
         // Firestore
         this.firestore = FirebaseFirestore.getInstance();

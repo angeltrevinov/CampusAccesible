@@ -11,6 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -36,13 +39,15 @@ public class AsistenciaAdapter extends  RecyclerView.Adapter<AsistenciaAdapter.V
     public void onBindViewHolder(@NonNull AsistenciaAdapter.ViewHolder holder, int position) {
 
         Asistencia currentItem = mAsistenciaList.get(position);
-        String Titulo = currentItem.getTitulo();
-        String Subtitulo = currentItem.getDescripcion();
-        String image = currentItem.getImgUrl();
+        String Titulo = currentItem.getStrName();
+        String Subtitulo = currentItem.getStrDescription();
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference().child(currentItem.getImgUrl().getPath());
 
         holder.mTitulo.setText(Titulo);
         holder.mSubtitulo.setText(Subtitulo);
-        Glide.with(mContext).load(image).centerCrop().into(holder.mImageView);
+        Glide.with(mContext).load(storageReference).centerCrop().into(holder.mImageView);
     }
 
     @Override
