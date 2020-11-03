@@ -1,6 +1,7 @@
 package com.example.campusaccesible;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -63,8 +67,10 @@ public class BuildingAdapter extends RecyclerView.Adapter<BuildingAdapter.ViewHo
         holder.NamBuildingHolder.setText(currentItem.getStrName());
 
         // set image of the current building
-        /*Glide.with(context).load(currentItem.getImgUrl())
-                .centerCrop().into(holder.img);*/
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference().child(currentItem.getImgUrl().getPath());
+        Glide.with(context).load(storageReference)
+                .centerCrop().into(holder.img);
 
         // set event handler for if click
         holder.buildingHolder.setOnClickListener(new View.OnClickListener() {
