@@ -1,38 +1,70 @@
 package com.example.campusaccesible;
 
+import com.google.firebase.firestore.DocumentReference;
+
 public class Asistencia {
 
-    private String Titulo;
-    private String Descripcion;
-    private String imgUrl;
+    private String strId;
+    private String strName;
+    private String strDescription;
+    private String asistUrl;
+    private DocumentReference imgUrl;
 
-    public Asistencia(String titulo, String descripcion, String imgUrl) {
-        Titulo = titulo;
-        Descripcion = descripcion;
+    // -----------------------------------------------------
+    public Asistencia() { }
+
+    // -----------------------------------------------------
+    public Asistencia(
+            String strId,
+            String strName,
+            String strDescription,
+            String asistUrl,
+            DocumentReference imgUrl
+    ) {
+        this.strId = strId;
+        this.strName = strName;
+        this.strDescription = strDescription;
+        this.asistUrl = asistUrl;
         this.imgUrl = imgUrl;
     }
 
-    public String getTitulo() {
-        return Titulo;
+    public String getStrId() {
+        return strId;
     }
 
-    public void setTitulo(String titulo) {
-        Titulo = titulo;
+    public void setStrId(String strId) {
+        this.strId = strId;
     }
 
-    public String getDescripcion() {
-        return Descripcion;
+    public String getStrName() {
+        return strName;
     }
 
-    public void setDescripcion(String descripcion) {
-        Descripcion = descripcion;
+    public void setStrName(String strName) {
+        this.strName = strName;
     }
 
-    public String getImgUrl() {
+    public String getStrDescription() {
+        return strDescription;
+    }
+
+    public void setStrDescription(String strDescription) {
+        this.strDescription = strDescription;
+    }
+
+    public DocumentReference getImgUrl() {
         return imgUrl;
     }
 
-    public void setImgUrl(String imgUrl) {
+    public void setImgUrl(DocumentReference imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public String getAsistUrl() {
+        return asistUrl;
+    }
+
+    public void setAsistUrl(String asistUrl) {
+        this.asistUrl = asistUrl;
     }
 }
