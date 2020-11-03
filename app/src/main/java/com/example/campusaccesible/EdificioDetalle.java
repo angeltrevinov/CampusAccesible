@@ -64,9 +64,9 @@ public class EdificioDetalle extends AppCompatActivity {
     // TODO: delete wen data from building is correct
     public void generarDatos() {
         datos = new ArrayList<>();
-        datos.add(new Detalles("Baños", "", ""));
-        datos.add(new Detalles("Elevador", "", ""));
-        datos.add(new Detalles("Rampas accesibles", "", ""));
+        datos.add(new Detalles("Baños", "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg", "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg"));
+        datos.add(new Detalles("Elevador", "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg", "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg"));
+        datos.add(new Detalles("Rampas accesibles", "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg", "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg"));
     }
 
 }
