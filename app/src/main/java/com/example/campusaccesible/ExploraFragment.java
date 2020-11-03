@@ -2,13 +2,22 @@ package com.example.campusaccesible;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,18 +33,10 @@ public class ExploraFragment extends Fragment {
     private RecyclerView buildingRecyclerView;
     // holder for the building adapter
     private BuildingAdapter mbuildingAdapter;
-    // list that stores the elements we are going to display
-    List<Building> elements;
-
-/*    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    */
+    // list that stores the buildingList we are going to display
+    List<Building> buildingList;
+    // our firestore instance
+    FirebaseFirestore firestore;
 
     // -----------------------------------------------------
     // Required empty public constructor
@@ -45,17 +46,11 @@ public class ExploraFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment ExploraFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static ExploraFragment newInstance(String param1, String param2) {
+    public static ExploraFragment newInstance() {
         ExploraFragment fragment = new ExploraFragment();
         Bundle args = new Bundle();
-        //args.putString(ARG_PARAM1, param1);
-        //args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -64,14 +59,13 @@ public class ExploraFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            //mParam1 = getArguments().getString(ARG_PARAM1);
-            //mParam2 = getArguments().getString(ARG_PARAM2);
-        }
 
         // Set the title of the the activity
         ((MainActivity) getActivity()).getSupportActionBar().
                 setTitle("Explora");
+
+        // Firestore
+        this.firestore = FirebaseFirestore.getInstance();
     }
 
     // -----------------------------------------------------
@@ -97,11 +91,13 @@ public class ExploraFragment extends Fragment {
                 new LinearLayoutManager(view.getContext())
         );
 
-        this.generateBuildingInfo();
+        this.buildingList = new ArrayList<>();
+
+        this.getBuildingsFromFirestore();
 
         // creating the adapter
         this.mbuildingAdapter = new BuildingAdapter(
-                this.elements, view.getContext()
+                this.buildingList, view.getContext()
         );
 
         // setting the adapter
@@ -113,60 +109,24 @@ public class ExploraFragment extends Fragment {
 
     // -----------------------------------------------------
     // Just a method that creates our buildings
-    // TODO: This should be an http method and name more
-    //  precise
-    public void generateBuildingInfo() {
-        this.elements = new ArrayList<>();
-        elements.add(new Building(
-                "",
-                "Edificio 1",
-                "",
-                "",
-                "",
-                "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg",
-                false,
-                false,
-                false));
-        elements.add(new Building(
-                "",
-                "Edificio 2",
-                "",
-                "",
-                "",
-                "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg",
-                false,
-                false,
-                false));
-        elements.add(new Building(
-                "",
-                "Edificio 3",
-                "",
-                "",
-                "",
-                "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg",
-                false,
-                false,
-                false));
-        elements.add(new Building(
-                "",
-                "Edificio 4",
-                "",
-                "",
-                "",
-                "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg",
-                false,
-                false,
-                false));
-        elements.add(new Building(
-                "",
-                "Edificio 5",
-                "",
-                "",
-                "",
-                "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg",
-                false,
-                false,
-                false));
-
+    public void getBuildingsFromFirestore() {
+        this.firestore.collection(Constants.COLLECTION_LOCATION)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                Log.d(Constants.FIREBASE_TAG, documentSnapshot.getId() + "=>" + documentSnapshot.getData());
+                                Building currentItem = documentSnapshot.toObject(Building.class);
+                                currentItem.setStrId(documentSnapshot.getId());
+                                buildingList.add(currentItem);
+                            }
+                            mbuildingAdapter.notifyDataSetChanged();
+                        } else {
+                            Log.w(Constants.FIREBASE_TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
     }
 }
