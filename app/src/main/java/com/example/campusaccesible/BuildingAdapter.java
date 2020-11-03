@@ -63,8 +63,8 @@ public class BuildingAdapter extends RecyclerView.Adapter<BuildingAdapter.ViewHo
         holder.NamBuildingHolder.setText(currentItem.getStrName());
 
         // set image of the current building
-        Glide.with(context).load(currentItem.getImgUrl())
-                .centerCrop().into(holder.img);
+        /*Glide.with(context).load(currentItem.getImgUrl())
+                .centerCrop().into(holder.img);*/
 
         // set event handler for if click
         holder.buildingHolder.setOnClickListener(new View.OnClickListener() {

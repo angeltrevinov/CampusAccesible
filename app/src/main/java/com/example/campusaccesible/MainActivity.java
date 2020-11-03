@@ -24,13 +24,8 @@ import java.util.Deque;
 
 public class MainActivity extends AppCompatActivity {
 
-    static public String TAG = "FIREBASE_MSG";
-
     // holder for the bottom navigation bar
     BottomNavigationView bottomNav;
-
-    // our firestore instance
-    FirebaseFirestore firestore;
 
     // -----------------------------------------------------
     /**
@@ -55,11 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.action_bar_layout);
-
-        // Firestore
-        this.firestore = FirebaseFirestore.getInstance();
-        this.getBuildingsFromFirestore();
-
     }
 
     // -----------------------------------------------------
@@ -109,22 +99,4 @@ public class MainActivity extends AppCompatActivity {
                     return false;
                 }
             };
-
-    // -----------------------------------------------------
-    public void getBuildingsFromFirestore() {
-        this.firestore.collection("location")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                                Log.d(TAG, documentSnapshot.getId() + "=>" + documentSnapshot.getData());
-                            }
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
-                    }
-                });
-    }
 }

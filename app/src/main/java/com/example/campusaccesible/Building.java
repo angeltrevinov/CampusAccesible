@@ -1,8 +1,9 @@
 package com.example.campusaccesible;
 
+import com.google.firebase.firestore.DocumentReference;
+
 /**
  * Class that holds the structure of our info
- * TODO: Change to attributes needed
  */
 public class Building {
 
@@ -11,10 +12,13 @@ public class Building {
     private String strDescription;
     private String strLatitute; // check if its string
     private String strLongtitude; // check if its string
-    private String imgUrl; //For when we receive different images
+    private DocumentReference imgUrl; //For when we receive different images
     private Boolean bBathrooms;
     private Boolean bElevators;
     private Boolean bRamps;
+
+    // -----------------------------------------------------
+    public Building() {}
 
     // -----------------------------------------------------
     public Building(
@@ -23,7 +27,7 @@ public class Building {
             String strDescription,
             String strLatitute,
             String strLongtitude,
-            String imgUrl,
+            DocumentReference imgUrl,
             Boolean bBathrooms,
             Boolean bElevators,
             Boolean bRamps
@@ -50,11 +54,11 @@ public class Building {
     }
 
     // -----------------------------------------------------
-    public String getImgUrl() {
+    public DocumentReference getImgUrl() {
         return imgUrl;
     }
     // -----------------------------------------------------
-    public void setImgUrl(String imgUrl) {
+    public void setImgUrl(DocumentReference imgUrl) {
         this.imgUrl = imgUrl;
     }
 
