@@ -11,7 +11,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imgBuilding"
         android:layout_width="395dp"
         android:layout_height="209dp"
         android:layout_marginTop="28dp"
@@ -23,14 +23,17 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/idRecyDetalles"
-        android:layout_width="393dp"
-        android:layout_height="348dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
         android:layout_marginEnd="1dp"
-        android:layout_marginBottom="2dp"
+        android:layout_marginBottom="28dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgBuilding"
+        app:layout_constraintVertical_bias="0.179" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

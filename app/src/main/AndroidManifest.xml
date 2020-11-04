@@ -18,8 +18,10 @@
         <activity
             android:name=".WebActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".EdificioDetalle" />
-        <activity android:name=".Login" />
+        <activity android:name=".EdificioDetalle"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".Login"
+            android:parentActivityName=".MainActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

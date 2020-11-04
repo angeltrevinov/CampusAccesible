@@ -117,7 +117,7 @@ public class ExploraFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                                Log.d(Constants.FIREBASE_TAG, documentSnapshot.getId() + "=>" + documentSnapshot.getData());
+                                Log.w(Constants.FIREBASE_TAG, "Error getting documents.", task.getException());
                                 Building currentItem = documentSnapshot.toObject(Building.class);
                                 currentItem.setStrId(documentSnapshot.getId());
                                 buildingList.add(currentItem);

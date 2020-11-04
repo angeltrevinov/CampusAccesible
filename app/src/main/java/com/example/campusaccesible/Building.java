@@ -1,11 +1,16 @@
 package com.example.campusaccesible;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.firestore.DocumentReference;
+
+import java.io.Serializable;
 
 /**
  * Class that holds the structure of our info
  */
-public class Building {
+public class Building implements Serializable {
 
     private String strId;
     private String strName;
