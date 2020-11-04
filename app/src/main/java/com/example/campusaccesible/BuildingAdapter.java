@@ -29,8 +29,6 @@ public class BuildingAdapter extends RecyclerView.Adapter<BuildingAdapter.ViewHo
     // to store our instance
     public static final String CURRRENT_BUILDING =
             "com.example.twoact.extra.CURRENT_BUILDING";
-    public static final String CURRRENT_BUILDING_IMAGE =
-            "com.example.twoact.extra.CURRENT_BUILDING_IMAGE";
 
     // -----------------------------------------------------
     public BuildingAdapter(
@@ -84,8 +82,7 @@ public class BuildingAdapter extends RecyclerView.Adapter<BuildingAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, EdificioDetalle.class);
-                intent.putExtra(CURRRENT_BUILDING, currentItem);
-                intent.putExtra(CURRRENT_BUILDING_IMAGE, currentItem.getImgUrl().getId());
+                intent.putExtra(CURRRENT_BUILDING, currentItem.getStrId());
                 context.startActivity(intent);
             }
         });

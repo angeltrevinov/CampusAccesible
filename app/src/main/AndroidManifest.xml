@@ -15,12 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-<<<<<<< HEAD
         <activity
             android:name=".WebActivity"
             android:parentActivityName=".MainActivity" />
-=======
->>>>>>> ExploraDetallesIntent
         <activity android:name=".EdificioDetalle"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".Login"

@@ -1,5 +1,8 @@
 package com.example.campusaccesible;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.firestore.DocumentReference;
 
 import java.io.Serializable;
