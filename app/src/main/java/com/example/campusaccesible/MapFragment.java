@@ -243,7 +243,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         FetchUrl FetchUrl = new FetchUrl();
         FetchUrl.execute(url);
         googleMap.setMyLocationEnabled(true);
-        getCurrentLocation();
+        if (ActivityCompat.checkSelfPermission(MapFragment.this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            // When permission granted call method
+            getCurrentLocation();
+        }
+        else{
+            // When permission denied request permission
+            ActivityCompat.requestPermissions(MapFragment.this.getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION},44);
+        }
     }
 
     @Override
