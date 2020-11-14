@@ -192,7 +192,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                             //CircleOptions options = new CircleOptions().center(latLng).radius(1);
 
                             // Zoom map
-                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
+                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
 
                             // Add marker on map
                             //googleMap.addCircle(options);
