@@ -7,4 +7,5 @@
     <string name="mapa">Mapa</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
+    <string name="map_key">AIzaSyBiRXubNj2xlC7_XEdaJe2PDlaD_i2rcEk</string>
 </resources>
