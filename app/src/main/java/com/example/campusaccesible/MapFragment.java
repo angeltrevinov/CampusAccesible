@@ -298,15 +298,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 // Adding all the points in the route to LineOptions
                 lineOptions.addAll(points);
                 lineOptions.width(10);
-                lineOptions.color(Color.BLUE);
-                //Log.d(“onPostExecute”,”onPostExecute lineoptions decoded”);
+                lineOptions.color(Color.RED);
+                Log.d("onPostExecute","onPostExecute lineoptions decoded");
             }
 // Drawing polyline in the Google Map for the i-th route
             if(lineOptions != null) {
                 map.addPolyline(lineOptions);
             }
             else {
-                //Log.d(“onPostExecute”,”without Polylines drawn”);
+                Log.d("onPostExecute","without Polylines drawn");
             }
         }
     }
