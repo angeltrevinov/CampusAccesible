@@ -122,4 +122,9 @@ public class Building implements Serializable {
     public void setbRamps(Boolean bRamps) {
         this.bRamps = bRamps;
     }
+
+    @Override
+    public String toString() {
+        return this.strName;
+    }
 }
