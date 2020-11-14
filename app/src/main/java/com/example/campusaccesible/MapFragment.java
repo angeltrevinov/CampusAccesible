@@ -1,9 +1,14 @@
 package com.example.campusaccesible;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -18,12 +23,15 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,6 +39,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +62,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     AutoCompleteTextView opcion_origen;
 
     GoogleMap map;
+    FusedLocationProviderClient client;
+    SupportMapFragment mapFragment;
 
     public MapFragment() {
         // Required empty public constructor
@@ -136,20 +148,64 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         });
 
         //Encontrar el mapa
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+
         mapFragment.getMapAsync(this);
+
+        // Initialize fused Location
+        client = LocationServices.getFusedLocationProviderClient(this.getActivity());
+
+        // Check permission
+        if (ActivityCompat.checkSelfPermission(MapFragment.this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            // When permission granted call method
+            getCurrentLocation();
+        }
+        else{
+            // When permission denied request permission
+            ActivityCompat.requestPermissions(MapFragment.this.getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION},44);
+        }
+
+
+
 
         return rootView;
     }
 
+    private void getCurrentLocation() {
+        // Initialize task location
+        @SuppressLint("MissingPermission") Task<Location> task = client.getLastLocation();
+        task.addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(final Location location) {
+                // When success
+                if(location != null){
+                    // Sync map
+                    mapFragment.getMapAsync(new OnMapReadyCallback() {
+                        @Override
+                        public void onMapReady(GoogleMap googleMap) {
+                            // Initialize lat lng
+                            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+                            // Create marker options
+                            //CircleOptions options = new CircleOptions().center(latLng).radius(1);
+
+                            // Zoom map
+                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
+
+                            // Add marker on map
+                            //googleMap.addCircle(options);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        map = googleMap;
-        LatLng TecMty = new LatLng(25.6513545,-100.2899002);
-        map.addMarker(new MarkerOptions().position(TecMty).title("Tecnologico de Mty"));
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(TecMty).zoom(18.5f).build();
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
-        map.moveCamera(cameraUpdate);
+        googleMap.setMyLocationEnabled(true);
+        getCurrentLocation();
     }
 
     // -----------------------------------------------------
@@ -183,5 +239,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         Context context = ((MainActivity) getActivity()).getApplicationContext();
         Toast toast = Toast.makeText(context, strMessage, Toast.LENGTH_SHORT);
         toast.show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == 44){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                // When permission granted call method
+                getCurrentLocation();
+            }
+        }
     }
 }
