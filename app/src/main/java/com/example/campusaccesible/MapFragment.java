@@ -40,6 +40,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -89,6 +90,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     GoogleMap map;
     FusedLocationProviderClient client;
     SupportMapFragment mapFragment;
+    Marker Origin;
+    Marker Destination;
     Polyline polyline = null;
     List<LatLng> LatLnglist = new ArrayList<>();
 
@@ -130,6 +133,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         this.buildingList = new ArrayList<>();
         this.getBuildingsFromFirestore();
 
+        //Encontrar el mapa
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+
+        mapFragment.getMapAsync(this);
+
         //Dropdown de Input destination
         opcion_destino = rootView.findViewById(R.id.destination);
         opcion_destino.setAdapter(new ArrayAdapter<Building>(
@@ -137,21 +145,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 android.R.layout.simple_list_item_1,
                 this.buildingList
         ));
-        opcion_destino.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                in.hideSoftInputFromWindow(view.getWindowToken(), 0);
-
-                // TODO: put marker on the map for the item selected
-                Object item = parent.getItemAtPosition(position);
-                if (item instanceof Building) {
-                    Building selectedBuilding = (Building) item;
-                    showToast("" + selectedBuilding.getStrName());
-                }
-            }
-        });
 
         //Dropdown de Input Origin
         opcion_origen = rootView.findViewById(R.id.origin);
@@ -160,26 +153,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 android.R.layout.simple_list_item_1,
                 this.buildingList
         ));
-        opcion_origen.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                in.hideSoftInputFromWindow(view.getWindowToken(), 0);
-
-                // TODO: put marker on the map for the item selected
-                Object item = parent.getItemAtPosition(position);
-                if (item instanceof Building) {
-                    Building selectedBuilding = (Building) item;
-                    showToast("" + selectedBuilding.getStrName());
-                }
-            }
-        });
-
-        //Encontrar el mapa
-        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-
-        mapFragment.getMapAsync(this);
 
         // Initialize fused Location
         client = LocationServices.getFusedLocationProviderClient(this.getActivity());
@@ -243,9 +216,57 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         FetchUrl FetchUrl = new FetchUrl();
         FetchUrl.execute(url);
         googleMap.setMyLocationEnabled(true);
+        map = googleMap;
         if (ActivityCompat.checkSelfPermission(MapFragment.this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             // When permission granted call method
             getCurrentLocation();
+
+            // listener for text view destino
+            opcion_destino.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    in.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+                    Object item = parent.getItemAtPosition(position);
+                    if (Destination != null) {
+                        Destination.remove();
+                    }
+
+                    if (item instanceof Building) {
+                        Building selectedBuilding = (Building) item;
+                        Double dLat = Double.parseDouble(selectedBuilding.getStrLatitute());
+                        Double dLng = Double.parseDouble(selectedBuilding.getStrLongtitude());
+
+                        LatLng destination = new LatLng(dLat, dLng);
+                        Destination = map.addMarker(new MarkerOptions().position(destination).title(selectedBuilding.getStrName()));
+                    }
+                }
+            });
+
+            // listener for textview origin
+            opcion_origen.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    in.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+                    if (Origin != null) {
+                        Origin.remove();
+                    }
+                    Object item = parent.getItemAtPosition(position);
+                    if (item instanceof Building) {
+                        Building selectedBuilding = (Building) item;
+                        Double dLat = Double.parseDouble(selectedBuilding.getStrLatitute());
+                        Double dLng = Double.parseDouble(selectedBuilding.getStrLongtitude());
+
+                        LatLng origin = new LatLng(dLat, dLng);
+                        Origin = map.addMarker(new MarkerOptions().position(origin).title(selectedBuilding.getStrName()));
+                    }
+                }
+            });
         }
         else{
             // When permission denied request permission
@@ -476,15 +497,4 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                     }
                 });
     }
-
-    // TODO: delete
-    void showToast(
-            // helps us display a toast message
-            String strMessage
-    ){
-        Context context = ((MainActivity) getActivity()).getApplicationContext();
-        Toast toast = Toast.makeText(context, strMessage, Toast.LENGTH_SHORT);
-        toast.show();
-    }
-
 }
