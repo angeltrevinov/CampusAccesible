@@ -86,7 +86,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     SupportMapFragment mapFragment;
     Marker Origin;
     Marker Destination;
-    Polyline polyline = null;
+    List<Polyline> polyline = new ArrayList<>();
     List<LatLng> LatLnglist = new ArrayList<>();
 
 
@@ -202,14 +202,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     public void onMapReady(GoogleMap googleMap) {
         googleMap.setMyLocationEnabled(true);
         map = googleMap;
-        
 
-        LatLng origin = new LatLng(25.651897,-100.289675);
-        LatLng dest = new LatLng(25.651055,-100.290224);
-        /*Marcar caminos, PTS = Origen y Destino*/
-        String url = getUrl(origin, dest,"walking");
-        FetchUrl FetchUrl = new FetchUrl();
-        FetchUrl.execute(url);
         googleMap.setMyLocationEnabled(true);
         map = googleMap;
         if (ActivityCompat.checkSelfPermission(MapFragment.this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -229,6 +222,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                         Destination.remove();
                     }
 
+                    for (Polyline poly: polyline) {
+                        poly.remove();
+                    }
+                    polyline.clear();
+
                     if (item instanceof Building) {
                         Building selectedBuilding = (Building) item;
                         Double dLat = Double.parseDouble(selectedBuilding.getStrLatitute());
@@ -236,6 +234,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
                         LatLng destination = new LatLng(dLat, dLng);
                         Destination = map.addMarker(new MarkerOptions().position(destination).title(selectedBuilding.getStrName()));
+                        getRoute();
                     }
                 }
             });
@@ -251,6 +250,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                     if (Origin != null) {
                         Origin.remove();
                     }
+
+                    for (Polyline poly: polyline) {
+                        poly.remove();
+                    }
+                    polyline.clear();
+
                     Object item = parent.getItemAtPosition(position);
                     if (item instanceof Building) {
                         Building selectedBuilding = (Building) item;
@@ -259,6 +264,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
                         LatLng origin = new LatLng(dLat, dLng);
                         Origin = map.addMarker(new MarkerOptions().position(origin).title(selectedBuilding.getStrName()));
+                        getRoute();
                     }
                 }
             });
@@ -266,6 +272,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         else{
             // When permission denied request permission
             ActivityCompat.requestPermissions(MapFragment.this.getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION},44);
+        }
+    }
+
+    // -----------------------------------------------------
+    public void getRoute() {
+        if (this.Origin != null && this.Destination != null) {
+            LatLng origin = this.Origin.getPosition();
+            LatLng dest = this.Destination.getPosition();
+            String url = getUrl(origin, dest,"walking");
+            FetchUrl FetchUrl = new FetchUrl();
+            FetchUrl.execute(url);
         }
     }
 
@@ -388,7 +405,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 lineOptions.width(10);
                 lineOptions.color(Color.RED);
                 //Log.d("onPostExecute","onPostExecute lineoptions decoded");
-                map.addPolyline(lineOptions);
+                polyline.add(map.addPolyline(lineOptions));
             }
             // Drawing polyline in the Google Map for the i-th route
             if(lineOptions != null) {
