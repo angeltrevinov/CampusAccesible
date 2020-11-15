@@ -50,6 +50,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,7 +73,7 @@ import static androidx.core.content.ContextCompat.getSystemService;
  * Use the {@link MapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapFragment extends Fragment implements OnMapReadyCallback{
+public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     List<Building> buildingList;
     FirebaseFirestore firestore;
@@ -151,63 +152,32 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         // Initialize fused Location
         client = LocationServices.getFusedLocationProviderClient(this.getActivity());
 
-        // Check permission
-        if (ActivityCompat.checkSelfPermission(MapFragment.this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            // When permission granted call method
-            getCurrentLocation();
-        }
-        else{
-            // When permission denied request permission
-            ActivityCompat.requestPermissions(MapFragment.this.getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION},44);
-        }
-
-
-
 
         return rootView;
-    }
-
-    private void getCurrentLocation() {
-        // Initialize task location
-        @SuppressLint("MissingPermission") Task<Location> task = client.getLastLocation();
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(final Location location) {
-                // When success
-                if(location != null){
-                    // Sync map
-                    mapFragment.getMapAsync(new OnMapReadyCallback() {
-                        @Override
-                        public void onMapReady(GoogleMap googleMap) {
-                            // Initialize lat lng
-                            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-
-                            // Create marker options
-                            //CircleOptions options = new CircleOptions().center(latLng).radius(1);
-
-                            // Zoom map
-                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
-
-                            // Add marker on map
-                            //googleMap.addCircle(options);
-                        }
-                    });
-                }
-            }
-        });
     }
 
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        googleMap.setMyLocationEnabled(true);
-        map = googleMap;
-
-        googleMap.setMyLocationEnabled(true);
         map = googleMap;
         if (ActivityCompat.checkSelfPermission(MapFragment.this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             // When permission granted call method
-            getCurrentLocation();
+
+            googleMap.setMyLocationEnabled(true);
+            Task<Location> task = client.getLastLocation();
+            task.addOnSuccessListener(new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(final Location location) {
+                    // When success
+                    if (location != null) {
+                        // Initialize lat lng
+                        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+                        // Zoom map
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
+                    }
+                }
+            });
 
             // listener for text view destino
             opcion_destino.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -266,10 +236,26 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                     }
                 }
             });
-        }
-        else{
+        } else {
             // When permission denied request permission
-            ActivityCompat.requestPermissions(MapFragment.this.getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION},44);
+            ActivityCompat.requestPermissions(MapFragment.this.getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+
+            @SuppressLint("MissingPermission") Task<Location> task = client.getLastLocation();
+            task.addOnSuccessListener(new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(final Location location) {
+                    // When success
+                    Log.w("getting location", String.valueOf(location));
+                    if (location != null) {
+                        // Initialize lat lng
+                        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+                        // Zoom map
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
+                        map.setMyLocationEnabled(true);
+                    }
+                }
+            });
         }
     }
 
@@ -284,12 +270,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         }
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == 44){
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (requestCode == 44) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // When permission granted call method
-                getCurrentLocation();
             }
         }
     }
@@ -485,6 +471,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     }
 
     // -----------------------------------------------------
+
     /**
      * Method that gets the list of buildings from Firestore
      */
