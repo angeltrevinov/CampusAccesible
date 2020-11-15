@@ -86,7 +86,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     SupportMapFragment mapFragment;
     Marker Origin;
     Marker Destination;
-    List<Polyline> polyline = new ArrayList<>();
+    Polyline polyline = null;
     List<LatLng> LatLnglist = new ArrayList<>();
 
 
@@ -222,10 +222,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                         Destination.remove();
                     }
 
-                    for (Polyline poly: polyline) {
-                        poly.remove();
+                    if (polyline != null) {
+                        polyline.remove();
                     }
-                    polyline.clear();
 
                     if (item instanceof Building) {
                         Building selectedBuilding = (Building) item;
@@ -251,10 +250,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                         Origin.remove();
                     }
 
-                    for (Polyline poly: polyline) {
-                        poly.remove();
+                    if (polyline != null) {
+                        polyline.remove();
                     }
-                    polyline.clear();
 
                     Object item = parent.getItemAtPosition(position);
                     if (item instanceof Building) {
@@ -304,9 +302,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         // Mode
         String mode = "mode=" + directionMode;
         // Alternativos caminos
-        String alternatives = "alternatives=true";
         // Building the parameters to the web service
-        String parameters = str_origin + "&" + str_dest + "&" + mode + "&"+ alternatives;
+        String parameters = str_origin + "&" + str_dest + "&" + mode;
         // Output format
         String output = "json";
         // Building the url to the web service
@@ -403,9 +400,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 // Adding all the points in the route to LineOptions
                 lineOptions.addAll(points);
                 lineOptions.width(10);
-                lineOptions.color(Color.RED);
+                lineOptions.color(Color.BLUE);
                 //Log.d("onPostExecute","onPostExecute lineoptions decoded");
-                polyline.add(map.addPolyline(lineOptions));
+                polyline = map.addPolyline(lineOptions);
             }
             // Drawing polyline in the Google Map for the i-th route
             if(lineOptions != null) {
