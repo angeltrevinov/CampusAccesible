@@ -16,16 +16,15 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="301dp"
+        android:layout_width="280dp"
         android:layout_height="57dp"
+        android:layout_marginTop="5dp"
         android:background="#DCDCDC"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintVertical_bias="0.073">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
         <TextView
             android:id="@+id/textView4"
@@ -38,8 +37,8 @@
             android:id="@+id/destination"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:inputType="textPersonName"
             android:background="@android:color/transparent"
+            android:inputType="textPersonName"
             android:singleLine="true"></AutoCompleteTextView>
 
         <TextView
@@ -52,9 +51,9 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="295dp"
+        android:layout_width="280dp"
         android:layout_height="58dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="20dp"
         android:background="#DCDCDC"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
