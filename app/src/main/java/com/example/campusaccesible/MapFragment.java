@@ -63,6 +63,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    
     GoogleMap map;
     Polyline polyline = null;
     List<LatLng> LatLnglist = new ArrayList<>();
@@ -154,34 +155,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         
-        LatLng aulas1 = new LatLng(25.651897,-100.289675);
-        LatLng aulas2 = new LatLng(25.651055,-100.290224);
-        /*
-        LatLnglist.add(aulas1);
-        LatLnglist.add(aulas2);
-        if(polyline != null)polyline.remove();
-        PolylineOptions polylineOptions = new PolylineOptions().addAll(LatLnglist).clickable(true);
-        polyline = map.addPolyline(polylineOptions);
 
-        String url = getUrl(aulas1,aulas2,"waling");*/
-        
-        LatLng TecMty = new LatLng(25.6513545,-100.2899002);
-        map.addMarker(new MarkerOptions().position(TecMty).title("Tecnologico de Mty"));
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(TecMty).zoom(18.5f).build();
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
-        map.moveCamera(cameraUpdate);
-
-        LatLng origin = aulas1;
-        LatLng dest = aulas2;
-        // Getting URL to the Google Directions API
-        String url = getUrl(origin, dest,"driving");
-        //Log.d(“onMapClick”, url.toString());
+        LatLng origin = new LatLng(25.651897,-100.289675);
+        LatLng dest = new LatLng(25.651055,-100.290224);
+        /*Marcar caminos, PTS = Origen y Destino*/
+        String url = getUrl(origin, dest,"walking");
         FetchUrl FetchUrl = new FetchUrl();
-        // Start downloading json data from Google Directions API
         FetchUrl.execute(url);
-        //move map camera
-        map.moveCamera(CameraUpdateFactory.newLatLng(origin));
-        map.animateCamera(CameraUpdateFactory.zoomTo(18.5f));
     }
 
     private String getUrl(LatLng origin, LatLng dest, String directionMode) {
@@ -191,8 +171,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
         // Mode
         String mode = "mode=" + directionMode;
+        // Alternativos caminos
+        String alternatives = "alternatives=true";
         // Building the parameters to the web service
-        String parameters = str_origin + "&" + str_dest + "&" + mode;
+        String parameters = str_origin + "&" + str_dest + "&" + mode + "&"+ alternatives;
         // Output format
         String output = "json";
         // Building the url to the web service
@@ -204,14 +186,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
         @Override
         protected String doInBackground(String... url) {
-            // For storing data from web service
             String data = "";
             try {
                 // Fetching the data from web service
                 data = downloadUrl(url[0]);
-                //Log.d(“Background Task data”, data.toString());
             } catch (Exception e) {
-                //Log.d(“Background Task”, e.toString());
             }
             return data;
         }
@@ -219,7 +198,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             ParserTask parserTask = new ParserTask();
-            // Invokes the thread for parsing the JSON data
             parserTask.execute(result);
         }
     }
@@ -231,11 +209,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         HttpURLConnection urlConnection = null;
         try {
             URL url = new URL(strUrl);
-// Creating an http connection to communicate with url
+            // Creating an http connection to communicate with url
             urlConnection = (HttpURLConnection) url.openConnection();
-// Connecting to url
+            // Connecting to url
             urlConnection.connect();
-// Reading data from url
+            // Reading data from url
             iStream = urlConnection.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
             StringBuffer sb = new StringBuffer();
@@ -263,15 +241,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             List<List<HashMap<String, String>>> routes = null;
             try {
                 jObject = new JSONObject(jsonData[0]);
-                //Log.d(“ParserTask”,jsonData[0].toString());
                 DataParser parser = new DataParser();
-                //Log.d(“ParserTask”, parser.toString());
                 // Starts parsing data
                 routes = parser.parse(jObject);
-                //Log.d(“ParserTask”,”Executing routes”);
-                //Log.d(“ParserTask”,routes.toString());
             } catch (Exception e) {
-                //Log.d(“ParserTask”,e.toString());
                 e.printStackTrace();
             }
             return routes;
@@ -281,13 +254,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         protected void onPostExecute(List<List<HashMap<String, String>>> result) {
             ArrayList<LatLng> points;
             PolylineOptions lineOptions = null;
-// Traversing through all the routes
+                // Traversing through all the routes
             for (int i = 0; i < result.size(); i++) {
                 points = new ArrayList<>();
                 lineOptions = new PolylineOptions();
-// Fetching i-th route
+                // Fetching i-th route
                 List<HashMap<String, String>> path = result.get(i);
-// Fetching all the points in i-th route
+                // Fetching all the points in i-th route
                 for (int j = 0; j < path.size(); j++) {
                     HashMap<String, String> point = path.get(j);
                     double lat = Double.parseDouble(point.get("lat"));
@@ -295,15 +268,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                     LatLng position = new LatLng(lat, lng);
                     points.add(position);
                 }
-// Adding all the points in the route to LineOptions
+                // Adding all the points in the route to LineOptions
                 lineOptions.addAll(points);
                 lineOptions.width(10);
                 lineOptions.color(Color.RED);
-                Log.d("onPostExecute","onPostExecute lineoptions decoded");
-            }
-// Drawing polyline in the Google Map for the i-th route
-            if(lineOptions != null) {
+                //Log.d("onPostExecute","onPostExecute lineoptions decoded");
                 map.addPolyline(lineOptions);
+            }
+            // Drawing polyline in the Google Map for the i-th route
+            if(lineOptions != null) {
+                //map.addPolyline(lineOptions);
             }
             else {
                 Log.d("onPostExecute","without Polylines drawn");
@@ -380,68 +354,4 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             return poly;
         }
     }
-    /*
-    private void addPolylinesToMap(final DirectionsResult result){
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG, "run: result routes: " + result.routes.length);
-                if(mPolyLinesData.size() > 0){
-                    for(PolylineData polylineData: mPolyLinesData){
-                        polylineData.getPolyline().remove();
-                    }
-                    mPolyLinesData.clear();
-                    mPolyLinesData = new ArrayList<>();
-                }
-
-                for(DirectionsRoute route: result.routes){
-                    //Log.d(TAG, "run: leg: " + route.legs[0].toString());
-                    List<com.google.maps.model.LatLng> decodedPath = PolylineEncoding.decode(route.overviewPolyline.getEncodedPath());
-
-                    List<LatLng> newDecodedPath = new ArrayList<>();
-
-                    // This loops through all the LatLng coordinates of ONE polyline.
-                    for(com.google.maps.model.LatLng latLng: decodedPath){
-
-//                        Log.d(TAG, "run: latlng: " + latLng.toString());
-
-                        newDecodedPath.add(new LatLng(
-                                latLng.lat,
-                                latLng.lng
-                        ));
-                    }
-                    Polyline polyline = mGoogleMap.addPolyline(new PolylineOptions().addAll(newDecodedPath));
-                    polyline.setColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
-                    polyline.setClickable(true);
-                    mPolyLinesData.add(new PolylineData(polyline, route.legs[0]));
-
-                }
-            }
-        });
-    }
-    */
-
-    /*
-    private String getRequestUrl(LatLng origin, LatLng destination) {
-
-        String str_org = "origin" + origin.latitude + ","+origin.longitude;
-
-        String str_dest = "destination" + destination.latitude+","+destination.longitude;
-
-        String sensor = "sensor-false";
-        String mode = "mode-walking";
-        String param = str_org + "&"+str_dest+"&"+sensor+"&"+mode;
-        String output = "json";
-
-        String url = ""
-
-    }*/
-
-
-
-
-
-
-
-
 }
