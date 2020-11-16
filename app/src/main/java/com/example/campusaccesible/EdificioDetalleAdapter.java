@@ -38,8 +38,8 @@ public class EdificioDetalleAdapter extends RecyclerView.Adapter<EdificioDetalle
         final Detalles currentItem = detalleEdificios.get(position);
 
         holder.textNommbre.setText(currentItem.getStrNombre());
-        Glide.with(context).load(currentItem.getImgIconURL()).centerCrop().into(holder.imgIcono);
-        Glide.with(context).load(currentItem.getImgCheckURL()).centerCrop().into(holder.imgCheck);
+        Glide.with(context).load(currentItem.getImgIconURL()).into(holder.imgIcono);
+        Glide.with(context).load(currentItem.getImgCheckURL()).into(holder.imgCheck);
     }
 
     @Override
