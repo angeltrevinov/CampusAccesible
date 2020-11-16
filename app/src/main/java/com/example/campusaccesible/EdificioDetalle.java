@@ -65,9 +65,21 @@ public class EdificioDetalle extends AppCompatActivity {
     }
 
     public void generarDatos() {
-        datos.add(new Detalles("Baños", "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg", "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg"));
-        datos.add(new Detalles("Elevador", "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg", "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg"));
-        datos.add(new Detalles("Rampas accesibles", "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg", "https://tec.mx/sites/default/files/2018-12/mural-1920x1080_0.jpg"));
+        datos.add(new Detalles(
+                "Baños",
+                "https://firebasestorage.googleapis.com/v0/b/campusaccesible-753b5.appspot.com/o/icons%2Fbathroom.png?alt=media&token=5f273a16-539a-4e8a-8b90-c276242b04ed",
+                "https://firebasestorage.googleapis.com/v0/b/campusaccesible-753b5.appspot.com/o/icons%2Fcheck.png?alt=media&token=0f3913b0-60ae-454b-bc36-fa6a6dc71796"
+        ));
+        datos.add(new Detalles(
+                "Elevador",
+                "https://firebasestorage.googleapis.com/v0/b/campusaccesible-753b5.appspot.com/o/icons%2Felevator.png?alt=media&token=3bbbcb12-2623-4d36-a9b4-b25f2716e371",
+                "https://firebasestorage.googleapis.com/v0/b/campusaccesible-753b5.appspot.com/o/icons%2Fcheck.png?alt=media&token=0f3913b0-60ae-454b-bc36-fa6a6dc71796"
+        ));
+        datos.add(new Detalles(
+                "Rampas accesibles",
+                "https://firebasestorage.googleapis.com/v0/b/campusaccesible-753b5.appspot.com/o/icons%2Fwheelchair.png?alt=media&token=7f13cb12-6d81-45c9-af8c-7c837c8962fa",
+                "https://firebasestorage.googleapis.com/v0/b/campusaccesible-753b5.appspot.com/o/icons%2Fcheck.png?alt=media&token=0f3913b0-60ae-454b-bc36-fa6a6dc71796"
+        ));
     }
 
     // -----------------------------------------------------
