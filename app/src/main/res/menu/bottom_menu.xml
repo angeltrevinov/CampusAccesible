@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/asistencia_menu_button"
+        android:title="@string/asistencia"
+        android:icon="@drawable/ic_support"/>
+    <item
+        android:id="@+id/explora_menu_button"
+        android:title="@string/explora"
+        android:icon="@drawable/ic_compass" />
+    <item
+        android:id="@+id/mapa_menu_button"
+        android:title="@string/mapa"
+        android:icon="@drawable/ic_map" />
+</menu>
