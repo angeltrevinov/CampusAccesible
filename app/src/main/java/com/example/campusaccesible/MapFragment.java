@@ -238,7 +238,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             });
         } else {
             // When permission denied request permission
-            ActivityCompat.requestPermissions(MapFragment.this.getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+            //ActivityCompat.requestPermissions(MapFragment.this.getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
 
             @SuppressLint("MissingPermission") Task<Location> task = client.getLastLocation();
             task.addOnSuccessListener(new OnSuccessListener<Location>() {
@@ -270,7 +270,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    @SuppressLint("MissingPermission")
+    /*@SuppressLint("MissingPermission")
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 44) {
@@ -278,7 +278,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 // When permission granted call method
             }
         }
-    }
+    }*/
 
     private String getUrl(LatLng origin, LatLng dest, String directionMode) {
         // Origin of route
